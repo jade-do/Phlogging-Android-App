@@ -1,0 +1,63 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="@integer/edit_button_linearlayout_weight"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal">
+
+        <Button
+            android:id="@+id/edit_take_photo_button"
+            android:layout_width="@dimen/edit_button_width"
+            android:layout_height="@dimen/edit_button_height"
+            android:layout_margin="@dimen/edit_button_margin"
+            android:text="@string/edit_take_photo_button"
+            android:onClick="myClickHandler"/>
+        <Button
+            android:id="@+id/edit_select_photo_button"
+            android:layout_width="@dimen/edit_button_width"
+            android:layout_height="@dimen/edit_button_height"
+            android:layout_margin="@dimen/edit_button_margin"
+            android:text="@string/edit_select_photo_button"
+            android:onClick="myClickHandler"/>
+        <Button
+            android:id="@+id/edit_save_button"
+            android:layout_width="@dimen/edit_button_width"
+            android:layout_height="@dimen/edit_button_height"
+            android:layout_margin="@dimen/edit_button_margin"
+            android:text="@string/edit_save_button"
+            android:onClick="myClickHandler"/>
+
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/edit_title"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="@integer/edit_edittitle_weight"
+        android:textSize="@dimen/listview_textview_titletextsize"/>
+    <EditText
+        android:id="@+id/edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="@integer/edit_edittext_weight"
+        android:textSize="@dimen/listview_textview_textsize"/>
+    <ImageView
+        android:id="@+id/edit_image"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="@integer/edit_imageview_weight"/>
+    <TextView
+        android:id="@+id/location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/listview_textview_textsize"
+        android:layout_weight="@integer/edit_textview_weight"
+        android:text="@string/textview_no_information"/>
+
+
+
+</LinearLayout>

@@ -1,0 +1,41 @@
+
+<resources>
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <dimen name="edit_button_width">100dp</dimen>
+    <dimen name="edit_button_height">40dp</dimen>
+    <dimen name="edit_button_margin">10dp</dimen>
+
+    <dimen name="button_width">80dp</dimen>
+    <dimen name="button_height">40dp</dimen>
+    <dimen name="button_margin">10dp</dimen>
+    <dimen name="dialog_imageview_margin">10dp</dimen>
+
+    <dimen name="delete_button_width">80dp</dimen>
+    <dimen name="delete_button_margin">2dp</dimen>
+
+
+    <dimen name="listview_imageview_marginleft">10dp</dimen>
+    <dimen name="listview_imageview_marginright">30dp</dimen>
+    <dimen name="listview_textview_width">180dp</dimen>
+    <dimen name="listview_row_height">100dp</dimen>
+    <dimen name="listview_textview_titletextsize">20sp</dimen>
+    <dimen name="listview_textview_textsize">14sp</dimen>
+
+    <integer name="edit_edittitle_weight">15</integer>
+    <integer name="edit_edittext_weight">25</integer>
+    <integer name="edit_imageview_weight">40</integer>
+    <integer name="edit_textview_weight">20</integer>
+
+    <integer name="edit_button_linearlayout_weight">10</integer>
+
+    <integer name="dialog_imageview_weight">50</integer>
+    <integer name="dialog_textview_weight">50</integer>
+
+
+    <integer name="listview_titletextview_maxlines">1</integer>
+    <integer name="listview_textview_maxlines">2</integer>
+
+
+</resources>

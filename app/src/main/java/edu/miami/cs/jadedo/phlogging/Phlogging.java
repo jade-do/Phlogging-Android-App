@@ -9,12 +9,13 @@ import android.net.Uri;
 import android.text.format.Time;
 import android.view.View;
 import android.content.Intent;
+import android.widget.AdapterView;
 
 import java.util.List;
 import java.util.HashMap;
 import java.util.ArrayList;
 
-public class Phlogging extends AppCompatActivity {
+public class Phlogging extends AppCompatActivity implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
 
     private static final String DATABASE_NAME = "PhlogEntry.db";
     private DataRoomDB phlogEntryDB;
@@ -81,7 +82,7 @@ public class Phlogging extends AppCompatActivity {
 
         Intent editPhlogEntry;
 
-        switch(view.getId()){
+        switch(view.getId()) {
 
             // Starting the EditPhlogEntry activity:
             case R.id.add_entry_button:
@@ -94,8 +95,14 @@ public class Phlogging extends AppCompatActivity {
         }
     }
 
+    // Opens a second activity to edit the description upon a long click on one of the view
+    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long rowId){
+        Intent editPhlogEntry = new Intent();
 
+        editPhlogEntry.setClassName("edu.miami.cs.jadedo.phlogging", "edu.miami.cs.jadedo.phlogging.EditPhlogEntry");
+        startActivityForResult(editPhlogEntry, ACTIVITY_EDIT_PHLOG_ENTRY);
 
-
+        return true;
     }
+
 }

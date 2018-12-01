@@ -16,6 +16,7 @@
     <string name="dialog_dismiss_button">Dismiss</string>
     <string name="textview_no_description">No description yet</string>
     <string name="textview_no_information">No location information yet</string>
+    <string name="textview_no_time">No time information yet</string>
     <string name="edittext_no_description">Describe it!</string>
 
     <string name="record_file_name">recorded.3gp</string>

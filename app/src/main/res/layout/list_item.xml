@@ -33,6 +33,15 @@
             android:maxLines="@integer/listview_textview_maxlines"
             android:text="@string/textview_no_description"
             android:textSize="@dimen/listview_textview_textsize"/>
+        <TextView
+            android:id="@+id/phlog_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:gravity="center_vertical"
+            android:maxLines="@integer/listview_textview_maxlines"
+            android:text="@string/textview_no_time"
+            android:textSize="@dimen/listview_textview_textsize"/>
 
     </FrameLayout>
     <Button

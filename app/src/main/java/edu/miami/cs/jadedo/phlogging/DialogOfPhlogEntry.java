@@ -14,8 +14,18 @@ import android.net.Uri;
 import android.app.Activity;
 import android.content.DialogInterface;
 
-public class EditPhlogEntry extends DialogFragment implements DialogInterface.OnDismissListener {
+public class DialogOfPhlogEntry extends DialogFragment implements DialogInterface.OnDismissListener {
 
     View dialogView;
 
+    @Override
+    public View onCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
+        ImageView fullImage;
+
+        dialogView = inflater.inflate(R.layout.dialog_phlog_entry_view, container );
+
+        fullImage = (ImageView) dialogView.findViewById(R.id.dialog_image);
+
+        return dialogView;
+    }
 }

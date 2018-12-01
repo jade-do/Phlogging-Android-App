@@ -47,7 +47,7 @@ public class Phlogging extends AppCompatActivity implements AdapterView.OnItemCl
 
         // Mapping the DB to the ListView
         theList = findViewById(R.id.the_list);
-        listAdapter = new SimpleAdapter(this, fetchAllPhlogEntries(), R.layout.list_item);
+        listAdapter = new SimpleAdapter(this, fetchAllPhlogEntries(), R.layout.list_item, displayFields, displayViews);
         theList.setAdapter(listAdapter);
     }
 
@@ -95,7 +95,12 @@ public class Phlogging extends AppCompatActivity implements AdapterView.OnItemCl
         }
     }
 
-    // Opens a second activity to edit the description upon a long click on one of the view
+    // Opens a dialog on itemclick
+    public void onItemClick(AdapterView<?> parent, View view, int position, long rowId) {
+
+    }
+
+        // Opens a second activity to edit the description upon a long click on one of the view
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long rowId){
         Intent editPhlogEntry = new Intent();
 

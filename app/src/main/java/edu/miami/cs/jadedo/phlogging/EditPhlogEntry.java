@@ -41,7 +41,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import java.io.File;
 import java.util.List;
 
-public class EditPhlogEntry extends AppCompatActivity implements SensorEventListener {
+public class EditPhlogEntry extends AppCompatActivity {
+        //implements SensorEventListener {
 
     private static final String DATABASE_NAME = "PhlogEntry.db";
     private DataRoomDB phlogEntryDB;
@@ -81,7 +82,6 @@ public class EditPhlogEntry extends AppCompatActivity implements SensorEventList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        Time theTime = new Time();
 
 
         super.onCreate(savedInstanceState);
@@ -101,27 +101,27 @@ public class EditPhlogEntry extends AppCompatActivity implements SensorEventList
         setUpViewFromExistingData();
 
         // Setting up the camera
-        theTime.set(unixTime);
 
         cameraFileName = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).toString()
-                + theTime.format("%A %D %T")+ "-" + getString(R.string.camera_file_name);
+                + "Photo-" + unixTime + ".jpeg";
+        Toast.makeText(this, cameraFileName, Toast.LENGTH_SHORT).show();
 
         // Setting up the Location Provider
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(
                 this);
         locationRequest = new LocationRequest();
-        locationRequest.setInterval(2000);
-        locationRequest.setFastestInterval(2000 / 2);
+        locationRequest.setInterval(getResources().getInteger(R.integer.time_between_location_updates_ms);
+        locationRequest.setFastestInterval(getResources().getInteger(R.integer.time_between_location_updates_ms / 2);
         locationManager = (LocationManager)(getSystemService(LOCATION_SERVICE));
         detectLocators();
         startLocating();
 
-        // Setting up the Sensor Locator
+/*        // Setting up the Sensor Locator
         sensorManager = (SensorManager)getSystemService(Context.SENSOR_SERVICE);
         magneticFieldAvailable = startSensor(Sensor.TYPE_MAGNETIC_FIELD);
         gravityAvailable= startSensor(Sensor.TYPE_ACCELEROMETER);
         orientationAvailable = magneticFieldAvailable && gravityAvailable;
-        lightAvailable = startSensor(Sensor.TYPE_LIGHT);
+        lightAvailable = startSensor(Sensor.TYPE_LIGHT);*/
     }
 
     // Set up the view
@@ -234,9 +234,7 @@ public class EditPhlogEntry extends AppCompatActivity implements SensorEventList
             currentLocation = newLocation;
             Toast.makeText(this,"New location updated",Toast.LENGTH_SHORT).show();
             new SensorLocatorDecoder(getApplicationContext(), this).execute(currentLocation);
-
         }
-
     }
 
     @Override
@@ -250,7 +248,7 @@ public class EditPhlogEntry extends AppCompatActivity implements SensorEventList
 
         super.onDestroy();
         fusedLocationClient.removeLocationUpdates(myLocationCallback);
-        sensorManager.unregisterListener(this);
+//        sensorManager.unregisterListener(this);
     }
 
     public void myClickHandler(View view) {
@@ -324,21 +322,23 @@ public class EditPhlogEntry extends AppCompatActivity implements SensorEventList
                 }
                 break;
             case ACTIVITY_SELECT_PICTURE:
-                photoUri = returnedIntent.getData();
+                if (resultCode == Activity.RESULT_OK) {
+                    photoUri = returnedIntent.getData();
 
-                if (photoUri == null){
-                    finish();
-                } else {
-                    galleryPhotoUriString = photoUri.toString();
-                    galleryPhoto = findViewById(R.id.edit_gallery_photo);
-                    galleryPhoto.setImageURI(photoUri);
+                    if (photoUri == null) {
+                        finish();
+                    } else {
+                        galleryPhotoUriString = photoUri.toString();
+                        galleryPhoto = findViewById(R.id.edit_gallery_photo);
+                        galleryPhoto.setImageURI(photoUri);
+                    }
                 }
                 break;
             default:
                 break;
         }
     }
-
+/*
     private boolean startSensor(int sensorType){
         if (sensorManager.getSensorList(sensorType).isEmpty()){
             return false;
@@ -346,8 +346,9 @@ public class EditPhlogEntry extends AppCompatActivity implements SensorEventList
             sensorManager.registerListener(this, sensorManager.getDefaultSensor(sensorType), SensorManager.SENSOR_DELAY_NORMAL);
             return true;
         }
-    }
+    }*/
 
+/*
     // Detect any changes in orientation
     public void onSensorChanged (SensorEvent event) {
         boolean gravityChanged, magneticFieldChanged, orientationChanged, lightChanged;
@@ -379,7 +380,7 @@ public class EditPhlogEntry extends AppCompatActivity implements SensorEventList
             orientationChanged = arrayCopyChangeTest(newOrientation, orientation, 5.0f); //---- 5 degrees
         }
 
-        if (orientationChanged || gravityChanged || proximityChanged || lightChanged) {
+        if (orientationChanged || gravityChanged || lightChanged) {
             updateSensorDisplay();
         }
     }
@@ -406,8 +407,47 @@ public class EditPhlogEntry extends AppCompatActivity implements SensorEventList
         final String[] orientations = {"Upright","Left side","Upside down","Right side"};
         Log.i("PROGRESS", "CONFIG CHANGE");
         super.onConfigurationChanged(newConfig);
-        ((TextView) findViewById(R.id.orientation)).setText("The rotation is " + orientations[screen.getRotation()]);
+        ((TextView) findViewById(R.id.edit_sensor)).setText("The rotation is " + orientations[screen.getRotation()]);
     }
+    private void updateSensorDisplay() {
+
+        String sensorValues = "";
+        final String format = "%5.1f";
+
+        sensorValues += "Orientation\n";
+        if (orientationAvailable) {
+            sensorValues +=
+                    "A " + String.format(format, orientation[0]) + ", " +
+                            "P " + String.format(format, orientation[1]) + ", " +
+                            "R " + String.format(format, orientation[2]) + "\n\n";
+        } else {
+            sensorValues += "Not available\n\n";
+        }
+
+        sensorValues += "Gravity\n";
+        if (gravityAvailable) {
+            sensorValues +=
+                    "X " + String.format(format, gravity[0]) + "," +
+                            "Y " + String.format(format, gravity[1]) + "," +
+                            "Z " + String.format(format, gravity[2]) + "\n\n";
+        } else {
+            sensorValues += "Not available\n\n";
+        }
+
+
+        sensorValues += "Light\n";
+        if (lightAvailable) {
+            sensorValues +=
+                    "L " + String.format(format, light[0]) + "\n\n";
+        } else {
+            sensorValues += "Not available\n\n";
+        }
+
+        ((TextView) findViewById(R.id.edit_sensor)).setText(sensorValues);
+    }
+
+}
+*/
 
 
 }

@@ -37,13 +37,18 @@ public class SensorLocatorDecoder extends AsyncTask<Location, Void, String>{
 
         if (Geocoder.isPresent()){
             androidGeocoder = new Geocoder(theContext);
+            locationName = "";
+
             try {
                 addresses = androidGeocoder.getFromLocation(thisLocation.getLatitude(), thisLocation.getLongitude(), 1);
+                locationName += String.format("%.2f %s",thisLocation.getLatitude(),
+                        thisLocation.getLatitude() >= 0.0?"N":"S") + "   ";
+                locationName += String.format("%.2f %s",thisLocation.getLongitude(),
+                        thisLocation.getLongitude() >= 0.0?"E":"W")  + "   \n";
                 if (addresses.isEmpty()){
                     return("ERROR: Unknown location");
                 } else {
                     firstAddress = addresses.get(0);
-                    locationName = "";
                     index = 0;
                     while((addressLine = firstAddress.getAddressLine(index)) != null){
                         locationName += addressLine + ", ";

@@ -41,7 +41,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import java.io.File;
 import java.util.List;
 
-public class EditPhlogEntry extends AppCompatActivity {
+public class EditPhlogEntry extends AppCompatActivity  {
         //implements SensorEventListener {
 
     private static final String DATABASE_NAME = "PhlogEntry.db";
@@ -104,14 +104,15 @@ public class EditPhlogEntry extends AppCompatActivity {
 
         cameraFileName = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).toString()
                 + "Photo-" + unixTime + ".jpeg";
-        Toast.makeText(this, cameraFileName, Toast.LENGTH_SHORT).show();
 
         // Setting up the Location Provider
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(
                 this);
         locationRequest = new LocationRequest();
-        locationRequest.setInterval(getResources().getInteger(R.integer.time_between_location_updates_ms);
-        locationRequest.setFastestInterval(getResources().getInteger(R.integer.time_between_location_updates_ms / 2);
+        locationRequest.setInterval(getResources().getInteger(
+                R.integer.time_between_location_updates_ms));
+        locationRequest.setFastestInterval(getResources().getInteger(
+                R.integer.time_between_location_updates_ms) / 2);
         locationManager = (LocationManager)(getSystemService(LOCATION_SERVICE));
         detectLocators();
         startLocating();
@@ -199,7 +200,8 @@ public class EditPhlogEntry extends AppCompatActivity {
             Toast.makeText(this,"No Locator Available",Toast.LENGTH_SHORT).show();
         }
         try {
-            fusedLocationClient.requestLocationUpdates(locationRequest, myLocationCallback, Looper.myLooper());
+            fusedLocationClient.requestLocationUpdates(locationRequest,
+                    myLocationCallback,Looper.myLooper());
         } catch(SecurityException e) {
             Toast.makeText(this,"Permission denied",Toast.LENGTH_SHORT).show();
         }
@@ -209,14 +211,11 @@ public class EditPhlogEntry extends AppCompatActivity {
         @Override
         public void onLocationResult(LocationResult locationResult){
             onLocationChanged(locationResult.getLastLocation());
-            Log.i("IN", "ON Location Result");
 
         }
     };
 
     public void onLocationChanged(Location newLocation){
-        Toast.makeText(this, "In onLocationChanged", Toast.LENGTH_LONG).show();
-        Log.i("IN", "onLocationChanged");
         if (newLocation == null) {
             Toast.makeText(this,"No location",Toast.LENGTH_SHORT).show();
             return;
@@ -225,16 +224,21 @@ public class EditPhlogEntry extends AppCompatActivity {
         // If first time, set current location to new location
         if (initial){
             currentLocation = newLocation;
-            initial = false;
-            Toast.makeText(this,"New location updated",Toast.LENGTH_SHORT).show();
-            new SensorLocatorDecoder(getApplicationContext(), this).execute(currentLocation);
+            new SensorLocatorDecoder(getApplicationContext(), this).execute(newLocation);
 
-            // If not first time, only update if moved 100 m from previous location
+            initial = false;
+
+            // If not first time, only update if moved 1000 m from previous location
         } else if (currentLocation != null && currentLocation.distanceTo(newLocation) > getResources().getInteger(R.integer.threshold_for_last_location_meter)){
+
+            Toast.makeText(this,"Distance Large" + currentLocation.distanceTo(newLocation),Toast.LENGTH_SHORT).show();
             currentLocation = newLocation;
-            Toast.makeText(this,"New location updated",Toast.LENGTH_SHORT).show();
-            new SensorLocatorDecoder(getApplicationContext(), this).execute(currentLocation);
+            new SensorLocatorDecoder(getApplicationContext(), this).execute(newLocation);
+
+        } else {
+            Toast.makeText(this,"Distance Small" + currentLocation.distanceTo(newLocation),Toast.LENGTH_SHORT).show();
         }
+
     }
 
     @Override

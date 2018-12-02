@@ -40,6 +40,6 @@
 
     <integer name="time_between_location_updates_ms">2000</integer>
 
-    <integer name="threshold_for_last_location_meter">100</integer>
+    <integer name="threshold_for_last_location_meter">1000</integer>
 
 </resources>

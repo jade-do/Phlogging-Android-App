@@ -11,6 +11,7 @@ import android.view.View;
 import android.content.Intent;
 import android.widget.AdapterView;
 import android.widget.Toast;
+import android.app.Activity;
 
 import java.util.List;
 import java.util.HashMap;
@@ -117,6 +118,24 @@ public class Phlogging extends AppCompatActivity implements AdapterView.OnItemCl
         startActivityForResult(editPhlogEntry, ACTIVITY_EDIT_PHLOG_ENTRY);
 
         return true;
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case ACTIVITY_EDIT_PHLOG_ENTRY:
+                if (resultCode == Activity.RESULT_OK) {
+
+                } else {
+                    Toast.makeText(this, "Okay, return to main activity",
+                            Toast.LENGTH_LONG).show();
+                }
+                break;
+            default:
+                break;
+
+        }
+
     }
 
 }

@@ -10,6 +10,7 @@ import android.text.format.Time;
 import android.view.View;
 import android.content.Intent;
 import android.widget.AdapterView;
+import android.widget.Toast;
 
 import java.util.List;
 import java.util.HashMap;
@@ -23,6 +24,7 @@ public class Phlogging extends AppCompatActivity implements AdapterView.OnItemCl
     private ListView theList;
     SimpleAdapter listAdapter;
     private final int ACTIVITY_EDIT_PHLOG_ENTRY = 1;
+    private final int ACTIVITY_VIEW_PHLOG_ENTRY = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +55,6 @@ public class Phlogging extends AppCompatActivity implements AdapterView.OnItemCl
 
     // Mapping the DB to the ListItems ArrayList
     private ArrayList<HashMap<String,Object>> fetchAllPhlogEntries(){
-        List<DataRoomEntity> dbEntities;
         HashMap<String,Object> oneItem;
         ArrayList<HashMap<String,Object>> listItems;
         Time theTime;
@@ -95,12 +96,20 @@ public class Phlogging extends AppCompatActivity implements AdapterView.OnItemCl
         }
     }
 
-    // Opens a dialog on itemclick
+    // Dialog shows up and Description is spoken when a row item is clicked
     public void onItemClick(AdapterView<?> parent, View view, int position, long rowId) {
+        long unixTime;
+        Intent viewPhlogEntry;
+
+        unixTime = dbEntities.get(position).getUnixTime();
+        viewPhlogEntry = new Intent();
+        viewPhlogEntry.setClassName("edu.miami.cs.jadedo.phlogging", "edu.miami.cs.jadedo.phlogging.EditPhlogEntry");
+        viewPhlogEntry.putExtra("unix_time", unixTime);
+        startActivityForResult(viewPhlogEntry, ACTIVITY_VIEW_PHLOG_ENTRY);
 
     }
 
-        // Opens a second activity to edit the description upon a long click on one of the view
+    // Opens a second activity to edit the description upon a long click on one of the view
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long rowId){
         Intent editPhlogEntry = new Intent();
 

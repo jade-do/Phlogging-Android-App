@@ -20,9 +20,9 @@ public class DataRoomEntity {
     @ColumnInfo(name = "gallery_photo_uri_string")
     private String galleryPhotoUriString;
     @ColumnInfo(name = "location_latitude")
-    private String locationLatitude;
+    private double locationLatitude;
     @ColumnInfo(name = "location_longitude")
-    private String locationLongitude;
+    private double locationLongitude;
     @ColumnInfo(name = "geodecoded_location")
     private String geodecodedLocation;
     @ColumnInfo(name = "orientation")
@@ -59,11 +59,11 @@ public class DataRoomEntity {
         return galleryPhotoUriString;
     }
 
-    public String getLocationLatitude(){
+    public double getLocationLatitude(){
         return locationLatitude;
     }
 
-    public String getLocationLongitude(){
+    public double getLocationLongitude(){
         return locationLongitude;
     }
 
@@ -107,11 +107,11 @@ public class DataRoomEntity {
         galleryPhotoUriString = newGalleryPhotoUriString;
     }
 
-    public void setLocationLatitude(String newLocationLatitude){
+    public void setLocationLatitude(double newLocationLatitude){
         locationLatitude = newLocationLatitude;
     }
 
-    public void setLocationLongitude(String newLocationLongitude){
+    public void setLocationLongitude(double newLocationLongitude){
         locationLongitude = newLocationLongitude;
     }
 

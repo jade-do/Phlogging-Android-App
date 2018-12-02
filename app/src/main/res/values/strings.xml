@@ -5,6 +5,8 @@
     <string name="add_entry_button">Add an entry</string>
     <string name="edit_take_photo_button">Camera</string>
     <string name="edit_select_photo_button">Gallery</string>
+    <string name="edit_share_contact_button">Share Contact</string>
+    <string name="edit_update_location_button">Update Location</string>
     <string name="edit_save_button">Save</string>
     <string name="share_button">Share</string>
 
@@ -20,5 +22,7 @@
     <string name="edittext_no_description">Describe it!</string>
 
     <string name="record_file_name">recorded.3gp</string>
+    <string name="camera_file_name">IMG.JPEG</string>
+
 
 </resources>

@@ -3,7 +3,8 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
-    <dimen name="edit_button_width">100dp</dimen>
+    <dimen name="edit_button_width">0dp</dimen>
+    <dimen name="edit_button_weight">1</dimen>
     <dimen name="edit_button_height">40dp</dimen>
     <dimen name="edit_button_margin">10dp</dimen>
 
@@ -37,5 +38,8 @@
     <integer name="listview_titletextview_maxlines">1</integer>
     <integer name="listview_textview_maxlines">2</integer>
 
+    <integer name="time_between_location_updates_ms">2000</integer>
+
+    <integer name="threshold_for_last_location_meter">100</integer>
 
 </resources>

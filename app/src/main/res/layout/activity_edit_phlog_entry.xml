@@ -12,6 +12,7 @@
         <Button
             android:id="@+id/edit_take_photo_button"
             android:layout_width="@dimen/edit_button_width"
+            android:layout_weight="@dimen/edit_button_weight"
             android:layout_height="@dimen/edit_button_height"
             android:layout_margin="@dimen/edit_button_margin"
             android:text="@string/edit_take_photo_button"
@@ -19,13 +20,32 @@
         <Button
             android:id="@+id/edit_select_photo_button"
             android:layout_width="@dimen/edit_button_width"
+            android:layout_weight="@dimen/edit_button_weight"
             android:layout_height="@dimen/edit_button_height"
             android:layout_margin="@dimen/edit_button_margin"
             android:text="@string/edit_select_photo_button"
             android:onClick="myClickHandler"/>
+        android:onClick="myClickHandler"/>
+        <Button
+            android:id="@+id/edit_share_contact_button"
+            android:layout_width="@dimen/edit_button_width"
+            android:layout_weight="@dimen/edit_button_weight"
+            android:layout_height="@dimen/edit_button_height"
+            android:layout_margin="@dimen/edit_button_margin"
+            android:text="@string/edit_share_contact_button"
+            android:onClick="myClickHandler"/>
+        <Button
+            android:id="@+id/edit_update_location"
+            android:layout_width="@dimen/edit_button_width"
+            android:layout_weight="@dimen/edit_button_weight"
+            android:layout_height="@dimen/edit_button_height"
+            android:layout_margin="@dimen/edit_button_margin"
+            android:text="@string/edit_update_location_button"
+            android:onClick="myClickHandler"/>
         <Button
             android:id="@+id/edit_save_button"
             android:layout_width="@dimen/edit_button_width"
+            android:layout_weight="@dimen/edit_button_weight"
             android:layout_height="@dimen/edit_button_height"
             android:layout_margin="@dimen/edit_button_margin"
             android:text="@string/edit_save_button"
@@ -45,14 +65,26 @@
         android:layout_height="0dp"
         android:layout_weight="@integer/edit_edittext_weight"
         android:textSize="@dimen/listview_textview_textsize"/>
-    <ImageView
-        android:id="@+id/edit_image"
-        android:layout_width="match_parent"
+    <LinearLayout android:id="@+id/images"
+        android:orientation="horizontal"
         android:layout_height="0dp"
-        android:layout_weight="@integer/edit_imageview_weight"/>
+        android:layout_weight="@integer/edit_imageview_weight"
+        android:layout_width="match_parent">
+        <ImageView
+            android:id="@+id/edit_camera_photo"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+        <ImageView
+            android:id="@+id/edit_gallery_photo"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+    </LinearLayout>
+
     <TextView
-        android:id="@+id/location"
-        android:layout_width="wrap_content"
+        android:id="@+id/edit_location"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="@dimen/listview_textview_textsize"
         android:layout_weight="@integer/edit_textview_weight"

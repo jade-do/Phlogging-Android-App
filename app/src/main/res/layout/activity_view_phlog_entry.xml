@@ -6,51 +6,84 @@
     >
 
     <TextView
-        android:id="@+id/title"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:textSize="@dimen/listview_textview_titletextsize"
-        android:text="@string/textview_no_description"/>
+        android:id="@+id/view_title"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:textSize="@dimen/listview_textview_titletextsize"/>
+
+    <TextView
+        android:id="@+id/view_text"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:textSize="@dimen/listview_textview_textsize"/>
+    <LinearLayout android:id="@+id/view_images"
+        android:orientation="horizontal"
+        android:layout_height="0dp"
+        android:layout_weight="3"
+        android:layout_width="match_parent">
+        <ImageView
+            android:id="@+id/view_camera_photo"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+        <ImageView
+            android:id="@+id/view_gallery_photo"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+    </LinearLayout>
 
 
     <TextView
-        android:id="@+id/text"
+        android:id="@+id/view_location"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="@integer/edit_edittext_weight"
         android:textSize="@dimen/listview_textview_textsize"
-        android:text="@string/textview_no_description"/>
-    <ImageView
-        android:id="@+id/dialog_image"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="@integer/dialog_imageview_weight"
-        android:layout_marginTop="@dimen/dialog_imageview_margin"
-        android:layout_marginBottom="@dimen/dialog_imageview_margin"
-        />
-
+        android:layout_weight="1"/>
 
     <TextView
-        android:id="@+id/location"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/view_sensor_values"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:textSize="@dimen/listview_textview_textsize"
-        android:layout_weight="@integer/edit_textview_weight"
-        android:text="@string/textview_no_information"/>
+        android:layout_weight="1"/>
 
-    <Button
-        android:id="@+id/share_button"
-        android:layout_width="@dimen/button_width"
-        android:layout_height="@dimen/button_height"
-        android:layout_marginTop="@dimen/button_margin"
-        android:layout_gravity="center"
-        android:text="@string/share_button"/>
-    <Button
-        android:id="@+id/dismiss_button"
-        android:layout_width="@dimen/button_width"
-        android:layout_height="@dimen/button_height"
-        android:layout_marginTop="@dimen/button_margin"
-        android:layout_marginBottom="@dimen/button_margin"
-        android:layout_gravity="center"
-        android:text="@string/dialog_dismiss_button"/>
+    <LinearLayout android:id="@+id/view_buttons"
+        android:orientation="horizontal"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_width="match_parent">
+        <Button
+            android:id="@+id/share_button"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="@dimen/button_height"
+            android:layout_marginTop="@dimen/button_margin"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/share_button"
+            android:onClick="myClickHandler"/>
+        <Button
+            android:id="@+id/dismiss_button"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="@dimen/button_height"
+            android:layout_marginTop="@dimen/button_margin"
+            android:layout_marginBottom="@dimen/button_margin"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/dialog_dismiss_button"
+            android:onClick="myClickHandler"/>
+        <Button
+            android:id="@+id/delete_button"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="@dimen/button_height"
+            android:layout_marginTop="@dimen/button_margin"
+            android:layout_marginBottom="@dimen/button_margin"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/delete_button"
+            android:onClick="myClickHandler"/>
+    </LinearLayout>
+
 </LinearLayout>

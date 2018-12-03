@@ -1,11 +1,11 @@
 package edu.miami.cs.jadedo.phlogging;
 
 import android.content.Context;
-import android.content.res.Configuration;
 import android.os.Bundle;
-import android.speech.tts.TextToSpeech;
 import android.support.v7.app.AppCompatActivity;
 import android.arch.persistence.room.Room;
+import android.view.Display;
+import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -41,8 +41,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import java.io.File;
 import java.util.List;
 
-public class EditPhlogEntry extends AppCompatActivity  {
-        //implements SensorEventListener {
+public class EditPhlogEntry extends AppCompatActivity implements SensorEventListener {
 
     private static final String DATABASE_NAME = "PhlogEntry.db";
     private DataRoomDB phlogEntryDB;
@@ -77,7 +76,11 @@ public class EditPhlogEntry extends AppCompatActivity  {
     private boolean orientationAvailable;
     private float[] light = new float[1];
     private boolean lightAvailable;
+
     private SensorManager sensorManager;
+    private Display screen;
+
+    private String sensorValues = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,12 +120,14 @@ public class EditPhlogEntry extends AppCompatActivity  {
         detectLocators();
         startLocating();
 
-/*        // Setting up the Sensor Locator
+        // Setting up the Sensor Locator
         sensorManager = (SensorManager)getSystemService(Context.SENSOR_SERVICE);
+        screen = ((WindowManager) getSystemService(WINDOW_SERVICE)).getDefaultDisplay();
+
         magneticFieldAvailable = startSensor(Sensor.TYPE_MAGNETIC_FIELD);
         gravityAvailable= startSensor(Sensor.TYPE_ACCELEROMETER);
         orientationAvailable = magneticFieldAvailable && gravityAvailable;
-        lightAvailable = startSensor(Sensor.TYPE_LIGHT);*/
+        lightAvailable = startSensor(Sensor.TYPE_LIGHT);
     }
 
     // Set up the view
@@ -131,6 +136,7 @@ public class EditPhlogEntry extends AppCompatActivity  {
         EditText text;
         ImageView galleryPhoto;
         TextView locationView;
+        TextView sensorValuesView;
         String location;
 
         title = findViewById(R.id.edit_title);
@@ -138,6 +144,7 @@ public class EditPhlogEntry extends AppCompatActivity  {
         cameraPhoto = findViewById(R.id.edit_camera_photo);
         galleryPhoto = findViewById(R.id.edit_gallery_photo);
         locationView = findViewById(R.id.edit_location);
+        sensorValuesView = findViewById(R.id.edit_sensor);
 
         if (phlogEntry.getPhlogTitle() != null) {
             title.setText(phlogEntry.getPhlogTitle());
@@ -150,23 +157,23 @@ public class EditPhlogEntry extends AppCompatActivity  {
             text.setText("Enter A Description For This Phlog");
         }
         if (phlogEntry.getCameraPhotoUriString() != null) {
-            cameraPhoto.setImageURI(Uri.parse(phlogEntry.getCameraPhotoUriString()));
+            cameraPhotoUriString = phlogEntry.getCameraPhotoUriString();
+            cameraPhoto.setImageURI(Uri.parse(cameraPhotoUriString));
         }
         if (phlogEntry.getGalleryPhotoUriString() != null) {
-            galleryPhoto.setImageURI(Uri.parse(phlogEntry.getGalleryPhotoUriString()));
+            galleryPhotoUriString = phlogEntry.getGalleryPhotoUriString();
+            galleryPhoto.setImageURI(Uri.parse(galleryPhotoUriString));
         }
 
-        location = "";
-        location += phlogEntry.getLocationLatitude() + " ";
-        location += phlogEntry.getLocationLongitude() + " ";
         if (phlogEntry.getGeodecodedLocation() != null){
-            location += "\n" + phlogEntry.getGeodecodedLocation()+ " ";
-        }
-        if (phlogEntry.getOrientation() != null){
-            location += "\n " + phlogEntry.getOrientation() + " ";
+            location = phlogEntry.getGeodecodedLocation()+ " ";
+            locationView.setText(location);
         }
 
-        locationView.setText(location);
+        if (phlogEntry.getSensorValues() != null){
+            sensorValuesView.setText(phlogEntry.getSensorValues());
+        }
+
     }
 
     // Detect available locators for use
@@ -230,13 +237,7 @@ public class EditPhlogEntry extends AppCompatActivity  {
 
             // If not first time, only update if moved 1000 m from previous location
         } else if (currentLocation != null && currentLocation.distanceTo(newLocation) > getResources().getInteger(R.integer.threshold_for_last_location_meter)){
-
-            Toast.makeText(this,"Distance Large" + currentLocation.distanceTo(newLocation),Toast.LENGTH_SHORT).show();
             currentLocation = newLocation;
-            new SensorLocatorDecoder(getApplicationContext(), this).execute(newLocation);
-
-        } else {
-            Toast.makeText(this,"Distance Small" + currentLocation.distanceTo(newLocation),Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -252,7 +253,7 @@ public class EditPhlogEntry extends AppCompatActivity  {
 
         super.onDestroy();
         fusedLocationClient.removeLocationUpdates(myLocationCallback);
-//        sensorManager.unregisterListener(this);
+        sensorManager.unregisterListener(this);
     }
 
     public void myClickHandler(View view) {
@@ -279,6 +280,9 @@ public class EditPhlogEntry extends AppCompatActivity  {
                         android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
                 startActivityForResult(galleryIntent, ACTIVITY_SELECT_PICTURE);
                 break;
+            case R.id.edit_update_location_button:
+                new SensorLocatorDecoder(getApplicationContext(), this).execute(currentLocation);
+                break;
             case R.id.edit_save_button:
 
                 title = (EditText) findViewById(R.id.edit_title);
@@ -292,6 +296,7 @@ public class EditPhlogEntry extends AppCompatActivity  {
                 phlogEntry.setLocationLatitude(currentLocation.getLatitude());
                 phlogEntry.setLocationLongitude(currentLocation.getLongitude());
                 phlogEntry.setGeodecodedLocation(geodecodedLocation);
+                phlogEntry.setSensorValues(sensorValues);
 
                 // Only update new time if this is a newly created phlog
                 if (unixTime == 0){
@@ -304,6 +309,7 @@ public class EditPhlogEntry extends AppCompatActivity  {
 
                 returnIntent = new Intent();
                 setResult(RESULT_OK, returnIntent);
+                finish();
                 break;
             default:
                 break;
@@ -322,7 +328,6 @@ public class EditPhlogEntry extends AppCompatActivity  {
                     cameraPhoto = findViewById(R.id.edit_camera_photo);
                     cameraPhoto.setImageURI(photoUri);
                     cameraPhotoUriString = photoUri.toString();
-                    phlogEntry.setCameraPhotoUriString(cameraPhotoUriString);
                 }
                 break;
             case ACTIVITY_SELECT_PICTURE:
@@ -342,7 +347,7 @@ public class EditPhlogEntry extends AppCompatActivity  {
                 break;
         }
     }
-/*
+
     private boolean startSensor(int sensorType){
         if (sensorManager.getSensorList(sensorType).isEmpty()){
             return false;
@@ -350,9 +355,9 @@ public class EditPhlogEntry extends AppCompatActivity  {
             sensorManager.registerListener(this, sensorManager.getDefaultSensor(sensorType), SensorManager.SENSOR_DELAY_NORMAL);
             return true;
         }
-    }*/
+    }
 
-/*
+
     // Detect any changes in orientation
     public void onSensorChanged (SensorEvent event) {
         boolean gravityChanged, magneticFieldChanged, orientationChanged, lightChanged;
@@ -406,18 +411,12 @@ public class EditPhlogEntry extends AppCompatActivity  {
         return (changed);
     }
 
-    @Override
-    public void onConfigurationChanged(Configuration newConfig){
-        final String[] orientations = {"Upright","Left side","Upside down","Right side"};
-        Log.i("PROGRESS", "CONFIG CHANGE");
-        super.onConfigurationChanged(newConfig);
-        ((TextView) findViewById(R.id.edit_sensor)).setText("The rotation is " + orientations[screen.getRotation()]);
-    }
+
     private void updateSensorDisplay() {
 
-        String sensorValues = "";
         final String format = "%5.1f";
 
+        sensorValues = "";
         sensorValues += "Orientation\n";
         if (orientationAvailable) {
             sensorValues +=
@@ -449,9 +448,4 @@ public class EditPhlogEntry extends AppCompatActivity  {
 
         ((TextView) findViewById(R.id.edit_sensor)).setText(sensorValues);
     }
-
-}
-*/
-
-
 }

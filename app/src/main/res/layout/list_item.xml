@@ -12,50 +12,34 @@
         android:layout_marginLeft="@dimen/listview_imageview_marginleft"
         android:layout_marginRight="@dimen/listview_imageview_marginright"
         android:src="@mipmap/ic_launcher" />
-    <FrameLayout
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="@dimen/listview_textview_width"
         android:layout_height="@dimen/listview_row_height">
         <TextView
             android:id="@+id/phlog_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top"
-            android:gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
             android:maxLines="@integer/listview_titletextview_maxlines"
-            android:text="@string/textview_no_description"
+            android:text="@string/textview_no_title"
             android:textSize="@dimen/listview_textview_titletextsize"/>
         <TextView
             android:id="@+id/phlog_description"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
             android:maxLines="@integer/listview_textview_maxlines"
+            android:layout_weight="2"
             android:text="@string/textview_no_description"
             android:textSize="@dimen/listview_textview_textsize"/>
         <TextView
             android:id="@+id/phlog_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_height="0dp"
             android:maxLines="@integer/listview_textview_maxlines"
             android:text="@string/textview_no_time"
             android:textSize="@dimen/listview_textview_textsize"/>
 
-    </FrameLayout>
-    <Button
-        android:id="@+id/delete_button"
-        android:layout_width="@dimen/delete_button_width"
-        android:layout_height="@dimen/edit_button_height"
-        android:layout_margin="@dimen/delete_button_margin"
-        android:layout_gravity="right"
-        android:clickable="true"
-        android:onClick="myClickHandler"
-        android:text="@string/delete_button" />
-
-
-
-
-
+    </LinearLayout>
 </LinearLayout>

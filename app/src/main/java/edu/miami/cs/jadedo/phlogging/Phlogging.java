@@ -32,6 +32,10 @@ public class Phlogging extends AppCompatActivity implements AdapterView.OnItemCl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_phlogging);
 
+        fillList();
+    }
+
+    public void fillList(){
         String[] displayFields = {
                 "phlog_photo",
                 "phlog_title",
@@ -52,6 +56,8 @@ public class Phlogging extends AppCompatActivity implements AdapterView.OnItemCl
         theList = findViewById(R.id.the_list);
         listAdapter = new SimpleAdapter(this, fetchAllPhlogEntries(), R.layout.list_item, displayFields, displayViews);
         theList.setAdapter(listAdapter);
+        theList.setOnItemClickListener(this);
+        theList.setOnItemLongClickListener(this);
     }
 
     // Mapping the DB to the ListItems ArrayList
@@ -68,7 +74,9 @@ public class Phlogging extends AppCompatActivity implements AdapterView.OnItemCl
 
         for (DataRoomEntity onePhlog: dbEntities) {
             oneItem = new HashMap<>();
-            oneItem.put("phlog_photo", Uri.parse(onePhlog.getCameraPhotoUriString()));
+            if (onePhlog.getCameraPhotoUriString() != null) {
+                oneItem.put("phlog_photo", Uri.parse(onePhlog.getCameraPhotoUriString()));
+            }
             oneItem.put("phlog_title", onePhlog.getPhlogTitle());
             oneItem.put("phlog_description", onePhlog.getText());
             unixTime = onePhlog.getUnixTime();
@@ -97,38 +105,55 @@ public class Phlogging extends AppCompatActivity implements AdapterView.OnItemCl
         }
     }
 
-    // Dialog shows up and Description is spoken when a row item is clicked
-    public void onItemClick(AdapterView<?> parent, View view, int position, long rowId) {
+    // View a phlog entry and enables
+    public void onItemClick (AdapterView<?> parent, View view, int position, long rowId){
         long unixTime;
-        Intent viewPhlogEntry;
+        Intent viewPhlogEntry = new Intent();
 
         unixTime = dbEntities.get(position).getUnixTime();
-        viewPhlogEntry = new Intent();
-        viewPhlogEntry.setClassName("edu.miami.cs.jadedo.phlogging", "edu.miami.cs.jadedo.phlogging.EditPhlogEntry");
+        viewPhlogEntry.setClassName("edu.miami.cs.jadedo.phlogging", "edu.miami.cs.jadedo.phlogging.ViewPhlogEntry");
         viewPhlogEntry.putExtra("unix_time", unixTime);
         startActivityForResult(viewPhlogEntry, ACTIVITY_VIEW_PHLOG_ENTRY);
 
     }
 
-    // Opens a second activity to edit the description upon a long click on one of the view
-    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long rowId){
-        Intent editPhlogEntry = new Intent();
+    // Edit Phlog Entry activ
+    public boolean onItemLongClick (AdapterView<?> parent, View view, int position, long rowId) {
+        long unixTime;
+        Intent editPhlogEntry;
 
+        unixTime = dbEntities.get(position).getUnixTime();
+        editPhlogEntry = new Intent();
         editPhlogEntry.setClassName("edu.miami.cs.jadedo.phlogging", "edu.miami.cs.jadedo.phlogging.EditPhlogEntry");
+        editPhlogEntry.putExtra("unix_time", unixTime);
         startActivityForResult(editPhlogEntry, ACTIVITY_EDIT_PHLOG_ENTRY);
 
         return true;
     }
 
+
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        long deleteUnixTime;
+        DataRoomEntity deletePhlogEntry;
+
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case ACTIVITY_EDIT_PHLOG_ENTRY:
                 if (resultCode == Activity.RESULT_OK) {
-
+                    fillList();
                 } else {
                     Toast.makeText(this, "Okay, return to main activity",
                             Toast.LENGTH_LONG).show();
+                }
+                break;
+            case ACTIVITY_VIEW_PHLOG_ENTRY:
+                if (resultCode == Activity.RESULT_OK){
+                    deleteUnixTime = data.getLongExtra("edu.miami.cs.jadedo.phlogging.delete_unix_time", -1);
+                    if (deleteUnixTime != -1){
+                        deletePhlogEntry = phlogEntryDB.daoAccess().getPhlogByUnixTime(deleteUnixTime);
+                        phlogEntryDB.daoAccess().deletePhlog(deletePhlogEntry);
+                        fillList();
+                    }
                 }
                 break;
             default:

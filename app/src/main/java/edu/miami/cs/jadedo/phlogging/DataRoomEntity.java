@@ -25,12 +25,10 @@ public class DataRoomEntity {
     private double locationLongitude;
     @ColumnInfo(name = "geodecoded_location")
     private String geodecodedLocation;
-    @ColumnInfo(name = "orientation")
-    private String orientation;
+    @ColumnInfo(name = "sensor_values")
+    private String sensorValues;
     @ColumnInfo(name = "contact_uri")
     private String contactUri;
-    @ColumnInfo(name = "light_reading")
-    private String lightReading;
     //-----------------------------------------------
     public DataRoomEntity() {
     }
@@ -71,16 +69,12 @@ public class DataRoomEntity {
         return geodecodedLocation;
     }
 
-    public String getOrientation(){
-        return orientation;
+    public String getSensorValues(){
+        return sensorValues;
     }
 
     public String getContactUri() {
         return contactUri;
-    }
-
-    public String getLightReading(){
-        return lightReading;
     }
 
     public void setId(int newId){
@@ -119,15 +113,12 @@ public class DataRoomEntity {
         geodecodedLocation = newGeodecodedLocation;
     }
 
-    public void setOrientation(String newOrientation){
-        orientation = newOrientation;
+    public void setSensorValues(String newSensorValues){
+        sensorValues = newSensorValues;
     }
 
     public void setContactUri(String newContactUri){
         contactUri = newContactUri;
     }
 
-    public void setLightReading(String newLightReading){
-        lightReading = newLightReading;
-    }
 }

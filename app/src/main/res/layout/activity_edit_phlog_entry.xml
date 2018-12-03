@@ -27,12 +27,12 @@
             android:onClick="myClickHandler"/>
         android:onClick="myClickHandler"/>
         <Button
-            android:id="@+id/edit_share_contact_button"
+            android:id="@+id/edit_update_location_button"
             android:layout_width="@dimen/edit_button_width"
             android:layout_weight="@dimen/edit_button_weight"
             android:layout_height="@dimen/edit_button_height"
             android:layout_margin="@dimen/edit_button_margin"
-            android:text="@string/edit_share_contact_button"
+            android:text="@string/edit_update_location_button"
             android:onClick="myClickHandler"/>
         <Button
             android:id="@+id/edit_save_button"

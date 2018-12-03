@@ -10,6 +10,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.view.View;
 import android.content.Intent;
+import android.provider.ContactsContract;
+import android.app.Activity;
+import android.database.Cursor;
+import android.util.Log;
 
 import org.w3c.dom.Text;
 
@@ -19,6 +23,8 @@ public class ViewPhlogEntry extends AppCompatActivity {
     private DataRoomDB phlogEntryDB;
     private DataRoomEntity phlogEntry;
     private long unixTime;
+    private final int ACTIVITY_SELECT_CONTACT = 1;
+    private static final int ACTIVITY_SEND_EMAIL = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,10 +86,14 @@ public class ViewPhlogEntry extends AppCompatActivity {
 
     public void myClickHandler(View view){
         Intent returnIntent;
+        Intent contactIntent;
 
         switch(view.getId()){
             case R.id.share_button:
-
+                // opens email
+                // start contacts activity
+                contactIntent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
+                startActivityForResult(contactIntent, ACTIVITY_SELECT_CONTACT);
                 break;
             case R.id.dismiss_button:
                 returnIntent = new Intent();
@@ -100,5 +110,84 @@ public class ViewPhlogEntry extends AppCompatActivity {
             default:
                 break;
         }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        Uri contactData;
+        Cursor contactsCursor;
+        String contactName;
+        int contactId;
+        String[] emailAddresses = new String[1];
+
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode) {
+            case ACTIVITY_SELECT_CONTACT:
+                if (resultCode == Activity.RESULT_OK) {
+                    contactData = data.getData();
+                    contactsCursor = getContentResolver().query(contactData, null, null, null, null);
+                    if (contactsCursor.moveToFirst()){
+                        contactName = contactsCursor.getString(contactsCursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+                        contactId = contactsCursor.getInt(
+                                contactsCursor.getColumnIndex(ContactsContract.Contacts._ID));
+                        contactsCursor.close();
+                        emailAddresses[0] = searchForEmailAddressById(contactId);
+                    }
+                    else {
+                        contactName = null;
+                        emailAddresses[0] = null;
+                        Log.i("IN onActivityResult", "No contact data found");
+                    }
+                    // start email activity
+                    Intent emailIntent = new Intent(Intent.ACTION_SEND);
+                    emailIntent.setType("text/plain");
+                    emailIntent.putExtra(Intent.EXTRA_EMAIL, emailAddresses);
+                    emailIntent.putExtra(Intent.EXTRA_SUBJECT,
+                            phlogEntryDB.daoAccess().getPhlogByUnixTime(unixTime).getPhlogTitle());
+                    emailIntent.putExtra(Intent.EXTRA_TEXT, "Hello, "
+                            + contactName + ".  Here's an awesome photo I wanted to share with you. "
+                            + phlogEntryDB.daoAccess().getPhlogByUnixTime(unixTime).getText());
+                    emailIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(phlogEntry.getCameraPhotoUriString()));
+                    startActivityForResult(emailIntent, ACTIVITY_SEND_EMAIL);
+                } else {
+                    Log.i("IN onActivityResult", "Contact not selected");
+                }
+                break;
+            case ACTIVITY_SEND_EMAIL:
+                Toast.makeText(this, "Email Sent!", Toast.LENGTH_LONG).show();
+                break;
+            default:
+                break;
+        }
+
+    }
+
+    public String searchForEmailAddressById(int contactId) {
+
+        // want to fetch the contact id and the email address
+        String[] projection = new String[] {
+                ContactsContract.CommonDataKinds.Email.CONTACT_ID,
+                ContactsContract.CommonDataKinds.Email.DATA
+        };
+
+        Cursor emailCursor = getContentResolver().query(
+                ContactsContract.CommonDataKinds.Email.CONTENT_URI,projection,"CONTACT_ID = ?",
+                new String[]{Integer.toString(contactId)},null);
+
+        // get email address
+        String emailAddress;
+        if (emailCursor.moveToFirst()) {
+            emailAddress = emailCursor.getString(emailCursor.getColumnIndex(
+                    ContactsContract.CommonDataKinds.Email.DATA));
+        } else {
+            emailAddress = null;
+            Log.i("IN searchForEmail", "No email address found");
+        }
+        emailCursor.close();
+
+        return(emailAddress);
+
     }
 }

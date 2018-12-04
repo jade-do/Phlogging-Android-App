@@ -37,6 +37,8 @@ Phlog entries can be created, viewed, edited, deleted, etc., in the usual idiom 
 
 6/ Email/share an entry
 
+7/ Order entries by time or title
+
 
 ## Usage Instructions:
 

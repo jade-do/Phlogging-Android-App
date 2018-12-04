@@ -1,9 +1,23 @@
 # Phlogging (Blogging)
 ### Coders: Yingtai and Jade
 
-## This Phlogging app allows the user to store "phlog" entries on their phone, recording information about some event, observation, thought, etc. 
+#### This Phlogging app allows the user to store "phlog" entries on their phone, recording information about some event, observation, thought, etc. Phlog entries can be created, viewed, edited, deleted, etc., in the usual idiom of blogging. 
 
-Phlog entries can be created, viewed, edited, deleted, etc., in the usual idiom of blogging. Each phlog entry is capable of storing:
+
+## Usage Instructions:
+
+1/ A click on the "Add An Entry" button opens up an Edit activity, where user can initialize a new entry.
+
+2/ Short click on an entry row opens up a View activity of the phlog entry. 
+
+  User can Email the phlog, or Delete the phlog, or Dismiss the view in this view activity.
+
+3/ Long click on an entry row opens up an Edit activity for the phlog entry.
+
+  User can edit existing phlog information in this activity.
+
+
+## Each phlog entry is capable of storing:
 
 1/ A title
 
@@ -38,17 +52,4 @@ Phlog entries can be created, viewed, edited, deleted, etc., in the usual idiom 
 6/ Email/share an entry
 
 7/ Order entries by time or title
-
-
-## Usage Instructions:
-
-1/ A click on the "Add An Entry" button opens up an Edit activity, where user can initialize a new entry.
-
-2/ Short click on an entry row opens up a View activity of the phlog entry. 
-
-  User can Email the phlog, or Delete the phlog, or Dismiss the view in this view activity.
-
-3/ Long click on an entry row opens up an Edit activity for the phlog entry.
-
-  User can edit existing phlog information in this activity.
 
